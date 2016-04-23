@@ -102,6 +102,13 @@ if(isset($_POST['add_termek']))
 $edit_termek = 0;
 
 
+//Content 
+$content = "";
+		
+$edit_mode_no_film_selected = "";
+	
+
+
 //Update - Update Form - Delete
 if(edit_mode()) {
 	
@@ -399,12 +406,12 @@ else {
 	if($i % $elem_row != 0) {
 		$termekek .= "</div>";
 	}
-	
-	
-	
-	$edit_mode_no_film_selected = "";
 
-	
+
+}
+
+
+
 	//Edit it
 	//Only one termek selected 
 	if(edit_mode()) {	
@@ -446,9 +453,7 @@ else {
 	}
 	
 	
-	//Content 
-	$content = "";
-	
+
 	//Speicifikusan egy termék jelenik meg
 	if(is_termek()) {	
 
@@ -600,7 +605,6 @@ else {
 	}
 	
 
-}
 
 
 

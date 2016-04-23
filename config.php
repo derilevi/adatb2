@@ -3,17 +3,19 @@
 $localhost = 'localhost';
 
 
+$dbuser_xii =  'h459723';
+
 $dbuser =  'xxxxx';
 $dbpass = 'xxxxxxx';
 
 
 
-$table_kiadok = "Kiado";
-$table_szerzo = "Szerzo";
+$table_kiadok = $dbuser_xii.".Kiado";
+$table_szerzo = $dbuser_xii.".Szerzo";
 
-$table_termekek = "Termekek";
-$table_termekMufaj = "TermekMufaj";
-$table_Mufaj = "Mufajok";
+$table_termekek = $dbuser_xii.".Termekek";
+$table_termekMufaj = $dbuser_xii.".TermekMufaj";
+$table_Mufaj = $dbuser_xii.".Mufajok";
 
 
 
