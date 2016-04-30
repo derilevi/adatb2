@@ -45,10 +45,16 @@ function Query($statement) {
 
 $pages = array(
     "index.php" => "Főoldal",
-    "termek.php" => "Termék Kereső",
+	
+	"termek_zene.php" => "Zene Kereső",
+	"termek_film.php" => "Film Kereső",
+	"termek_ekonyv.php" => "E-konyv Kereső",
+	"termek_konyv.php" => "Könyv Kereső",
+	
     "szerzo.php" => "Szerző Kereső",
     "kiado.php" => "Kiadó Kereső",
 	"mufaj.php" => "Műfaj Kereső",
+	"aruhaz.php" => "Áruház Kereső"
 );
 
 
@@ -60,10 +66,10 @@ function LinkGenerator($exception) {
 	
 	global $pages;
 	
-	foreach($pages as $key => $value)
-	{
-		if($key == $exception || $value == $exception)
+	foreach($pages as $key => $value) {
+		if($key == $exception || $value == $exception) {
 			continue;
+		}
 		
 		$output .= "<li><a href='$key'>$value</a></li>";
 	}
@@ -224,6 +230,50 @@ function CreateFormatRowFromSzerzoBasic($szerzo) {
 
 
 
+
+function CreateFormatRowFromFilmBasic($termek, $film) {
+		$hyper = "termek_film.php?id=".$termek['TERMEK_ID']."";
+
+	return '<div class="4u 12u(mobile)">
+				<article class="box style2">
+					<a href="'.$hyper.'" class="image featured"><img src="'.FindFilmImageById($termek['TERMEK_ID']).'" alt="" /></a>
+					<h3><a href="'.$hyper.'">'.$film['CIM'].'</a></h3>
+				</article>
+			</div>';
+}
+
+function CreateFormatRowFromEkonyvBasic($termek, $ekonyv) {
+		$hyper = "termek_ekonyv.php?id=".$termek['TERMEK_ID']."";
+
+	return '<div class="4u 12u(mobile)">
+				<article class="box style2">
+					<a href="'.$hyper.'" class="image featured"><img src="'.FindFilmImageById($termek['TERMEK_ID']).'" alt="" /></a>
+					<h3><a href="'.$hyper.'">'.$ekonyv['CIM'].'</a></h3>
+				</article>
+			</div>';
+}
+
+function CreateFormatRowFromKonyvBasic($termek, $konyv) {
+		$hyper = "termek_konyv.php?id=".$termek['TERMEK_ID']."";
+
+	return '<div class="4u 12u(mobile)">
+				<article class="box style2">
+					<a href="'.$hyper.'" class="image featured"><img src="'.FindFilmImageById($termek['TERMEK_ID']).'" alt="" /></a>
+					<h3><a href="'.$hyper.'">'.$konyv['CIM'].'</a></h3>
+				</article>
+			</div>';
+}
+
+function CreateFormatRowFromZeneBasic($termek, $zene) {
+		$hyper = "termek_zene.php?id=".$termek['TERMEK_ID']."";
+
+	return '<div class="4u 12u(mobile)">
+				<article class="box style2">
+					<a href="'.$hyper.'" class="image featured"><img src="'.FindFilmImageById($termek['TERMEK_ID']).'" alt="" /></a>
+					<h3><a href="'.$hyper.'">'.$zene['CIM'].'</a></h3>
+				</article>
+			</div>';
+}
 
 
 
@@ -551,8 +601,42 @@ function set_last_page($l) {
 
 
 
+//kosar
+
+function get_kosar() {
+	global $_SESSION;
+	return $_SESSION['kosar'];
+}
+
+//kosar Item
+// - ID
+// - NEV
+// - ar
+// - mennyiseg
+function add_kosar($id, $nev, $ar, $menny) {
+	global $_SESSION;
+	
+	$item = array(
+		"ID" => $id,
+		"NEV" => $nev,
+		"AR" => $ar,
+		"MENNY" => $menny
+	);
+	
+	if($_SESSION['kosar'] == null)
+	{
+		$_SESSION['kosar'] = array();
+	}
+	
+	$_SESSION['kosar'][] = $item;
+}
 
 
+function clear_kosar() {
+	global $_SESSION;
+	
+	$_SESSION['kosar'] = null;
+}
 
 
 //SQL HERE
