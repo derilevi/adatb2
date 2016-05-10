@@ -1,104 +1,42 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-include("common.php");
+<head>
 
-	if(edit_mode())
-	{
-		session_start();
-	}
+    <?php include("header.php"); ?>
 
+</head>
 
-	if(isset($_POST['pw']) && isset($_POST['email'])) 
-	{
-		echo "GetPW   ". $_POST['pw'] . " ";
-		
-		$email = $_POST['email'];
-		$pw = $_POST['pw'];
-		
-		if(empty($pw))
-		{
-			echo "invalid adat";
-		}
-		else
-		{	
-			//include("common.php");
-			
-			$result = Query("SELECT * FROM $table_felhasznalok WHERE email like '$email' AND jelszo like '$pw'");
-			
-			if(count($result) > 0)
-			{
-				open_session();
-			
-				set_right_session(0);
-				
-				set_user_id_session($result[0]['FELHASZNALO_ID']);
-			
-				echo "Open session";
-				
-				header('Location: '.get_last_page());
-				exit;
-			}	
-		}
-		
-		
-		
-		
-		
-		
-		
-		if($pw == "admin" && $email == "admin") 
-		{
-			open_session();
-			set_right_session(1);
-			
-			set_user_id_session(0);
-			
-			echo "Open session";
-			
-			header('Location: '.get_last_page());
-			exit;
-		}
-		else {
-			
-			echo "Close session _ 1";
-			
-			if(session_is_open())
-			{
-				close_session();
-			}
-		}
-		
-		
-		
-	}
+<body>
 
+    <?php include("navigation.php"); ?>
 
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <form id="login">
+                    <h3 class="text-center">Bejelentkezés</h3>
+                    <div class="form-group">
+                        <label>Felhasználónév</label>
+                        <input name="" class="form-control" id="user" value="" type="" />
+                    </div>
+                    <div class="form-group">
+                        <label>Jelszó</label>
+                        <input name="" class="form-control" id="pass" value="" type="password" />
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input id="emlekezz" type="checkbox" /> Emlékezz rám
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Bejelentkezés</button>
+                </form>
+                <a href="register.php">Még nem regisztráltál?</a>
+            </div>
+        </div>
+    </div>
 
-	if(!edit_mode() && session_is_open() == false) {
-		
-		echo '
-		<body align="center" style="background-color: GREY; margin-top: 200px">
-		<div>
-		
-		<form method="post">
-		
-			Email:<input type="text" name="email" autofocus>
-			Jelszo:<input type="password" name="pw">
-			<input type="submit" value="Submit">
-		
-		</form>
-		</body>
-		
-		</div>
-		';	
-	}
-	else {
-		echo "Close session _ 2";
-		
-		close_session();
-		header('Location: '.get_last_page());	
-	}
+</body>
 
-
-
-?>
+</html>
