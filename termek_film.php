@@ -538,6 +538,81 @@ if(is_termek()) {
 					</article>
 				</div>	
 			';
+			
+					//Aruhaz és DB
+			$content_nyilvantartas = "";
+			
+			$result_nyilvantartas = Query("SELECT * FROM $table_nyilvantartas WHERE termek_id=$termek_id");
+			
+			if(count($result_nyilvantartas) == 0)
+			{
+				$content_nyilvantartas = "A megadott termék nincs készleten";
+			}
+			else
+			{
+				$content_nyilvantartas ='
+				<div class="wrapper style1 first">
+				
+					<article class="container" id="top">
+					
+					<h1>Készletek</h1>
+					
+					<div class="12u 12u(mobile)">';
+
+				$content_nyilvantartas .=	
+				"
+					<div class='row'>
+						<div>Aruház</div>
+						<div>Készleten lévő darabszám</div>
+						<div>Rendelendő mennyiség</div>
+						<div></div>
+					</div>
+				";
+				
+				
+				foreach($result_nyilvantartas as $ny)
+				{
+					$aruhaz_id = $ny['ARUHAZ_ID'];
+					$termek_id = $ny['TERMEK_ID'];
+					$keszlet_db = $ny['DB'];
+					
+					//ARUHAZ NEV
+					$result_aruhaz = Query("SELECT * FROM $table_aruhazak WHERE aruhaz_id=$aruhaz_id");
+					$aruhaz = "";
+					foreach($result_aruhaz as $aruhaz);
+					
+					
+					$content_nyilvantartas .=
+					"<form method='POST' action='kosar.php'>
+					
+						<input type='hidden' name='aruhaz_id' value='$aruhaz_id'>
+						<input type='hidden' name='aruhaz_nev' value='".$aruhaz['CIM']."'>
+						
+						<input type='hidden' name='termek_id' value='$termek_id'>
+						<input type='hidden' name='termek_nev' value='".$termek['CIM']."'>
+						
+						<input type='hidden' name='ar' value='".$termek['AR']."'>
+						
+						<input type='hidden' name='user_id' value='".get_user_id()."'>
+					
+					<div class='row'>
+						<div><b>".$aruhaz['CIM']."</b></div>
+						<div>".$keszlet_db."</div>
+						<div><input type='text' name='db' value='1'></div>
+						<div><input type='submit' name='add_termek' value='Kosárba'></div>
+					</div>
+					
+					</form>";
+				}
+				
+				$content_nyilvantartas .= "</table></div></div></div>";
+			}
+			
+			$content .= $content_nyilvantartas;	
+			
+			
+			
+			
 	}
 	
 	else {

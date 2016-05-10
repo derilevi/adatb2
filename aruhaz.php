@@ -3,71 +3,73 @@
 include("common.php");
 include("date_formater.php");
 
-$edit_kiado = 0;
+$edit_aruhaz = 0;
 
 if(edit_mode()) {
 	session_start();
-	set_last_page("kiado.php");
+	set_last_page("aruhaz.php");
 }
 
 
 
 //Update form
-if(edit_mode() && isset($_GET['kiado_edit'])) {
-	$edit_kiado = 1;
+if(edit_mode() && isset($_GET['aruhaz_edit'])) {
+	$edit_aruhaz = 1;
 }
 
 //Delete
-if(edit_mode() && isset($_POST['kiado_delete'])) {
-	$kiado_id = $_GET['id'];
+if(edit_mode() && isset($_POST['aruhaz_delete'])) {
+	$aruhaz_id = $_GET['id'];
 	
-	$delete_kiado_result = Query("DELETE FROM $table_kiadok WHERE kiado_id=".$kiado_id);
+	$delete_kiado_result = Query("DELETE FROM $table_aruhazak WHERE aruhaz_id=".$aruhaz_id);
 	
-	header("Location: kiado.php");
+	header("Location: aruhaz.php");
 }
 
 
 //Apply Update
-if(edit_mode() && isset($_POST['kiado_apply_edit'])) {
-	$edit_kiado = 0;
+if(edit_mode() && isset($_POST['aruhaz_apply_edit'])) {
+	$edit_aruhaz = 0;
 	
-	$kiado_id = $_GET['id'];
+	$aruhaz_id = $_GET['id'];
 	
-	$nev = NVL($_POST['e_nev']);
+	
+	
+	$tel_szam = NVL($_POST['e_telszam']);
 	$cim = NVL($_POST['e_cim']);
 	
 	print_r($_POST);
 	
-	if(empty($nev) || empty($cim)) {
+	if(empty($tel_szam) || empty($cim)) {
 		
 		//Should show error
 	}
 	
 	else{	
 	
-		$insert = "UPDATE $table_kiadok SET kiado_neve='".$nev."', kiado_cime='".$cim."' WHERE kiado_id=".$kiado_id;
+		$insert = "UPDATE $table_aruhazak SET telszam='".$tel_szam."', cim='".$cim."' WHERE aruhaz_id=".$aruhaz_id;
 		//echo $insert;
-		$result_kiado_update = Query($insert);	
+		$result_aruhaz_update = Query($insert);	
 	}
 	
 }
 
 
 //Insert
-if(isset($_POST['add_kiado'])) {
-	$kiado_nev = NVL($_POST['kiado_nev']);
-	$kiado_cim = NVL($_POST['kiado_cim']);
+if(isset($_POST['add_aruhaz'])) {
+	$telszam = NVL($_POST['telszam']);
+	$cim = NVL($_POST['cim']);
 	
 	//$rendezo_id = -1;
 	
-	if(empty($kiado_nev) || empty($kiado_cim)) {
+	if(empty($telszam) || empty($cim)) {
 		
 		//Error
 	}
 	
 	else {
 		
-		$insert_kiado_result = Query("INSERT INTO $table_kiadok (kiado_neve,kiado_cime) VALUES('$kiado_nev','$kiado_cim')");
+		$insert_kiado_result = Query("INSERT INTO $table_aruhazak (telszam,cim) VALUES('$telszam','$cim')");
 	}
 }
 
@@ -75,23 +77,23 @@ if(isset($_POST['add_kiado'])) {
 
 
 
-$kiado_id = -1;
+$aruhaz_id = -1;
 
 if(isset($_GET['id']) && $_GET['id'] != null) {
 	
-	$kiado_id = $_GET['id'];
-	set_last_page("kiado.php?id=".$kiado_id);
+	$aruhaz_id = $_GET['id'];
+	set_last_page("aruhaz.php?id=".$aruhaz_id);
 	
 	if(isset($_GET['del'])) {
-		Query("DELETE FROM $table_kiadok WHERE kiado_id=".$mufaj_id);
-		header("Location: kiado.php");
+		Query("DELETE FROM $table_aruhazak WHERE aruhaz_id=".$mufaj_id);
+		header("Location: aruhaz.php");
 	}
 	
 }
 
-function is_kiado() {
-	global $kiado_id;
-	return $kiado_id != -1;
+function is_aruhaz() {
+	global $aruhaz_id;
+	return $aruhaz_id != -1;
 }
 
 
@@ -101,16 +103,16 @@ $i = 0;
 	
 	
 //Specific
-if(is_kiado()) {
+if(is_aruhaz()) {
 		
 // ###########################
 // #        kiado        #
 // ###########################
 	
-	$result_kiado = Query("SELECT * FROM $table_kiadok WHERE kiado_id=".$kiado_id);
-	//$kiado = mysql_fetch_assoc($result_kiado);
-	$kiado = "";
-	foreach($result_kiado as $kiado);
+	$result_aruhaz = Query("SELECT * FROM $table_aruhazak WHERE aruhaz_id=".$aruhaz_id);
+	//$aruhaz = mysql_fetch_assoc($result_aruhaz);
+	$aruhaz = "";
+	foreach($result_aruhaz as $aruhaz);
 	
 
 // ###########################
@@ -132,70 +134,71 @@ else {
 	$i = 0;
 	
 
-	$kiadok = "";
+	$aruhazk = "";
 	
-	$result_kiado = Query("SELECT * FROM $table_kiadok ORDER by kiado_id DESC");
+	$result_aruhaz = Query("SELECT * FROM $table_aruhazak ORDER by aruhaz_id DESC");
 
-	//if (mysql_num_rows($result_kiado) == 0) {
-	if (count($result_kiado) == 0) {
-		echo "No kiado at all";
+	//if (mysql_num_rows($result_aruhaz) == 0) {
+	if (count($result_aruhaz) == 0) {
+		echo "No aruhaz at all";
 		//exit;
 	}
 	
 	
-	//while($kiado = mysql_fetch_assoc($result_kiado)) 
-	foreach($result_kiado as $kiado) 
+	//while($aruhaz = mysql_fetch_assoc($result_aruhaz)) 
+	foreach($result_aruhaz as $aruhaz) 
 	{
 		if($i % $elem_row == 0) 
 		{
-			$kiadok .= "<div class='row'>";
+			$aruhazk .= "<div class='row'>";
 		}
 		
-		$kiadok .= CreateFormatRowFromKiadoBasic($kiado);
+		$aruhazk .= CreateFormatRowFromAruhazBasic($aruhaz);
 		
 		$i++;
 		
 		if($i % $elem_row == 0) 
 		{
-			$kiadok .= "</div>";
+			$aruhazk .= "</div>";
 		}
 	}
 	
 	
 	if($i % $elem_row != 0)
 	{
-		$kiadok .= "</div>";
+		$aruhazk .= "</div>";
 	}
 	
 	
 	
 	
 	
-	$edit_mode_no_kiado_selected = "";
+	$edit_mode_no_aruhaz_selected = "";
 
 	//Show the new Kiado Form
 	if(edit_mode())
 	{
-		$edit_mode_no_kiado_selected =  '
+		$edit_mode_no_aruhaz_selected =  '
 		
 						<div class="wrapper style4">
-						<article class="container" id="add_kiado">
+						<article class="container" id="add_aruhaz">
 							<div class="row">
 								
-								<h2>Kiadó Hozzáadás</h2><br/>
+								<h2>Áruház Hozzáadás</h2><br/>
 								
 								<!--<div class="4u 12u(mobile)">
-									<span class="image fit"><img src="'.FindKiadoImageById($kiado_id).'" alt="" /></span>
+									<span class="image fit"><img src="'.FindKiadoImageById($aruhaz_id).'" alt="" /></span>
 								</div>-->
 
 								<form method="post">
 		
 									<!-- kiado -->
-									<h3>kiado adatai</h3>
-									Név: <input type="text" name="kiado_nev">
-									Cim: <input type="text" name="kiado_cim">
+									<h3>Aruhaz adatai</h3>
+									Cim: <input type="text" name="cim">
+									Tel.: <input type="text" name="telszam">
+									
 								
-									<input type="hidden" name="add_kiado">
+									<input type="hidden" name="add_aruhaz">
 								
 									<input type="submit" value="Hozzáad">
 								
@@ -216,26 +219,26 @@ else {
 $content = "";
 
 		
-//Selected Kiado
-if(is_kiado()) {
+//Selected Aruhaz
+if(is_aruhaz()) {
 	
-	if($edit_kiado == 0) {
+	if($edit_aruhaz == 0) {
 		
 		$content = '<!-- Home -->
 			<div class="wrapper style1 first">
 				<article class="container" id="top">
 					<div class="row">
 						<div class="4u 12u(mobile)">
-							<span class="image fit"><img src="'.FindkiadoImageById($kiado_id).'" alt="" /></span>
+							<span class="image fit"><img src="'.FindkiadoImageById($aruhaz_id).'" alt="" /></span>
 						</div>
 						<div class="8u 12u(mobile)">
 							<header>
-								<h1>'.$kiado['KIADO_NEVE'].'</h1>
-								<p>Cime: '.$kiado['KIADO_CIME'].'</p>
+								<h1>'.$aruhaz['CIM'].'</h1>
+								<p>Telefonszám: '.$aruhaz['TELSZAM'].'</p>
 								<p>Bevétel: '.Rand(1,999). ' ' .Rand(0,999). ' ' .Rand(0,999) .' $</p>
 							</header>
 							
-							'. (edit_mode() ? '<a href="kiado.php?id='.$kiado['KIADO_ID'].'&kiado_edit" class="button big scrolly">Szerkesztés</a>' : '' ).'
+							'. (edit_mode() ? '<a href="aruhaz.php?id='.$aruhaz['ARUHAZ_ID'].'&aruhaz_edit" class="button big scrolly">Szerkesztés</a>' : '' ).'
 						</div>
 					</div>
 				</article>
@@ -251,18 +254,18 @@ if(is_kiado()) {
 				<form method="POST">
 					<div class="row">
 						<div class="4u 12u(mobile)">
-							<span class="image fit"><img src="'.FindkiadoImageById($kiado_id).'" alt="" /></span>
+							<span class="image fit"><img src="'.FindkiadoImageById($aruhaz_id).'" alt="" /></span>
 						</div>
 						<div class="8u 12u(mobile)">
 							<header>
-								<p>Név: <input type="text" name="e_nev" value="'.$kiado['KIADO_NEVE'].'" placeholder="'.$kiado['KIADO_NEVE'].'"></p>
+								<p>Név: <input type="text" name="e_telszam" value="'.$aruhaz['TELSZAM'].'" placeholder="'.$aruhaz['TELSZAM'].'"></p>
 								
-								<p>Cim: <input type="text" name="e_cim" value="'.$kiado['KIADO_CIME'].'" placeholder="'.$kiado['KIADO_CIME'].'"></p>
+								<p>Cim: <input type="text" name="e_cim" value="'.$aruhaz['CIM'].'" placeholder="'.$aruhaz['CIM'].'"></p>
 							</header>
 							
-							<input type="submit" class="button big scrolly" id="b_apply_edit" name="kiado_apply_edit" value="Szerkesztés Elfogadás">
+							<input type="submit" class="button big scrolly" id="b_apply_edit" name="aruhaz_apply_edit" value="Szerkesztés Elfogadás">
 							
-							<input type="submit" class="button big scrolly" id="b_delete" name="kiado_delete" value="Törlés">
+							<input type="submit" class="button big scrolly" id="b_delete" name="aruhaz_delete" value="Törlés">
 						</div>
 					</div>
 					</form>
@@ -277,13 +280,13 @@ else {
 	$content = '<div class="wrapper style3">
 			<article id="portfolio">
 				<header>
-					<h2>Kiadók Listája</h2>
+					<h2>Aruházak Listája</h2>
 					<p></p>
 				</header>
 				
 				<div class="container">
 				
-				'.$kiadok.'	
+				'.$aruhazk.'	
 					
 				</div>
 				
@@ -292,7 +295,7 @@ else {
 					<a href="#top" class="button big scrolly">Lap tetejére</a>
 				</footer>
 			</article>
-		</div>'.$edit_mode_no_kiado_selected;			
+		</div>'.$edit_mode_no_aruhaz_selected;			
 }
 			
 
@@ -304,7 +307,7 @@ else {
 <html>
 	
 	<head>
-		<title>Főoldal Port - <?php if(is_kiado()) echo $kiado['KIADO_NEVE']; ?></title>
+		<title>Főoldal Port - <?php if(is_aruhaz()) echo $aruhaz['telszam']; ?></title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -322,9 +325,9 @@ else {
 
 			<?php
 				
-				echo LinkGenerator('kiado.php');
-				if(is_kiado()) echo '<li><a href="kiado.php">Kiadó Kereső</a></li>';
-				if(edit_mode() && !is_kiado()) echo '<li><a href="#add_kiado"><span style="color:RED">Kiadó Hozzáadás</span></a></li>';
+				echo LinkGenerator('aruhaz.php');
+				if(is_aruhaz()) echo '<li><a href="aruhaz.php">Aruház Kereső</a></li>';
+				if(edit_mode() && !is_aruhaz()) echo '<li><a href="#add_aruhaz"><span style="color:RED">Áruház Hozzáadás</span></a></li>';
 				
 			?>	
 
