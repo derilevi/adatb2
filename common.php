@@ -55,6 +55,7 @@ $pages = array(
     "kiado.php" => "Kiadó Kereső",
 	"mufaj.php" => "Műfaj Kereső",
 	"aruhaz.php" => "Áruház Kereső"
+		
 );
 
 
@@ -73,6 +74,18 @@ function LinkGenerator($exception) {
 		
 		$output .= "<li><a href='$key'>$value</a></li>";
 	}
+	
+	
+	if(edit_mode())
+	{
+		$output .= "<li><a href='nyilvantartas.php'>Nyilvántartás</a></li>";
+	}
+	else
+	{
+		$output .= "<li><a href='login.php'>Belépés</a></li>";
+		$output .= "<li><a href='reg.php'>Regisztráció</a></li>";
+	}
+	
 	
 	
 	return $output;
@@ -227,6 +240,22 @@ function CreateFormatRowFromSzerzoBasic($szerzo) {
 				</article>
 			</div>';
 }
+
+
+
+//GOOD
+function CreateFormatRowFromAruhazBasic($aruhaz) {
+	$hyper = "aruhaz.php?id=".$aruhaz['ARUHAZ_ID']."";
+
+	return '<div class="4u 12u(mobile)">
+				<article class="box style2">
+					<a href="'.$hyper.'" class="image featured"><img src="'.FindKiadoImageById($aruhaz['ARUHAZ_ID']).'" alt="" /></a>
+					<h3><a href="'.$hyper.'">'.$aruhaz['CIM'].'</a></h3>
+				</article>
+			</div>';
+}
+
+
 
 
 
@@ -543,11 +572,26 @@ function open_session() {
 	session_start(['cookie_lifetime' => (10*60),]);
 	 
 	setcookie("edit", 1, time()+(10*60));  /* expire in 10 minutes */
-	 
-	 
+	  
 	global $_SESSION;
     $_SESSION['is_open'] = TRUE;
 }
+
+function set_right_session($r) {
+	global $_SESSION;
+	$_SESSION['right'] = $r;
+	
+	setcookie("right", $r, time()+(10*60));
+}
+
+function set_user_id_session($id) {
+	global $_SESSION;
+	$_SESSION['user_id'] = $id;
+	
+	setcookie("user_id", $r, time()+(10*60));
+}
+
+
 
 function close_session() {
    session_write_close();
@@ -558,6 +602,9 @@ function close_session() {
    
    global $_SESSION;
    $_SESSION['is_open'] = FALSE;
+   $_SESSION['right'] = 0;
+   
+   set_user_id_session(-1);
 }
 
 function destroy_session() {
@@ -569,6 +616,9 @@ function destroy_session() {
    
    global $_SESSION;
    $_SESSION['is_open'] = FALSE;
+   $_SESSION['right'] = 0;
+   
+   set_user_id_session(-1);
 }
 
 function session_is_open() {
@@ -578,11 +628,38 @@ function session_is_open() {
 }
 
 
+
+function is_logged_in() {
+	global $_SESSION;
+	return(isset($_SESSION['is_open']) && $_SESSION['is_open']);
+}
+
+
+function get_user_id()
+{
+	if(is_logged_in())
+	{
+		global $_SESSION;
+		return $_SESSION['user_id'];
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+
 //LoggedIN And User access level gt 1
 
 function edit_mode() {
 	global $_COOKIE;
-	return (isset($_COOKIE['edit']) && $_COOKIE['edit'] == 1);
+	
+	global $_SESSION;
+	
+	//print_r($_COOKIE);
+	
+	return (isset($_COOKIE['edit']) && $_COOKIE['edit'] == 1 && 
+		    isset($_COOKIE['right']) && $_COOKIE['right'] == 1);
 }
 
 
@@ -613,18 +690,21 @@ function get_kosar() {
 // - NEV
 // - ar
 // - mennyiseg
-function add_kosar($id, $nev, $ar, $menny) {
+function add_kosar($termek_id, $termek_nev, $aruhaz_id, $aruhaz_nev, $ar, $db) {
 	global $_SESSION;
 	
 	$item = array(
-		"ID" => $id,
-		"NEV" => $nev,
+		"T_ID" => $termek_id,
+		"T_NEV" => $termek_nev,
+		
+		"A_ID" => $aruhaz_id,
+		"A_NEV" => $aruhaz_nev,
+		
 		"AR" => $ar,
-		"MENNY" => $menny
+		"DB" => $db
 	);
 	
-	if($_SESSION['kosar'] == null)
-	{
+	if(isset($_SESSION['kosar']) == false) {
 		$_SESSION['kosar'] = array();
 	}
 	
@@ -640,11 +720,6 @@ function clear_kosar() {
 
 
 //SQL HERE
-
-
-
-
-
 
 
 

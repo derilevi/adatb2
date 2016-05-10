@@ -14,6 +14,10 @@ if(isset($_GET['id']))
 		redirect($id, $table_termekek_zenek, "termek_zene.php");
 		redirect($id, $table_termekek_konyvek, "termek_konyv.php");
 		redirect($id, $table_termekek_ekonyvek, "termek_ekonyv.php");
+		
+		
+		
+		header("Location: index.php");
 	}
 	
 	
@@ -28,6 +32,7 @@ function redirect($id, $table_name, $file) {
 	if(count($result) > 0)
 	{
 		header("Location: $file?id=".$id);
+		exit;
 	}
 }
 

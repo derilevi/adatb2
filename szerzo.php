@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include("common.php");
 include("date_formater.php");

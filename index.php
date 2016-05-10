@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿<?php
+<?php
 
 include("common.php");
 
@@ -154,22 +153,3 @@ if(edit_mode())
 
 	</body>
 </html>
-=======
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <?php
-            echo "adatb";
-        ?>
-    </body>
-</html>
->>>>>>> 019349b8229d8a87651969260f947e4b8ceb5500

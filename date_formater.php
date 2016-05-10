@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	function FormatDate($date)
 	{
 		$d = explode("-", $date);
