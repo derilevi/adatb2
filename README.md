@@ -1,0 +1,1 @@
+#Adatbázis alapú rendszerek beadandó feladat

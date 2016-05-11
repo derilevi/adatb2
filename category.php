@@ -16,33 +16,34 @@ if (isset($_GET["cat"])) {
 }
 switch ($category) {
     case 1:
-        $termekek=$db->getTermekek();
+        $termekek=$db->getTermekek("konyvek");
         break;
     case 2:
-        $termekek=$db->getTermekek();
+        $termekek=$db->getTermekek("ekonyvek");
         break;
     case 3:
-        $termekek=$db->getTermekek();
+        $termekek=$db->getTermekek("filmek");
         break;
     case 4:
-        $termekek=$db->getTermekek();
+        $termekek=$db->getTermekek("zenek");
         break;
     default:
-        $termekek=$db->getTermekek();
+        $termekek=$db->getTermekekRandom();
 }
+//print_r($termekek);
 
 print ("<div class=\"col-md-9\">
         <div class=\"row\">");
 
-for ($i=0;$i<9;$i++) {
+for ($i=0;$i<count($termekek);$i++) {
                     print("<div class=\"col-sm-4 col-lg-4 col-md-4\">
                         <div class=\"thumbnail\">
-                            <img src=\"img/1.jpg\" alt=\"\">
+                            <!-- <img src=\"img/".$termekek[$i]["TERMEK_ID"].".jpg\" alt=\"".$termekek[$i]["CIM"]."\"> -->
                             <div class=\"caption\">
-                                <h4 class=\"pull-right\">5000 Ft</h4>
-                                <h4><a href=\"#\">Tüskevár</a>
+                                <h4 class=\"pull-right\">".$termekek[$i]["AR"]." Ft</h4>
+                                <h4><a href=\"termek.php?id=".$termekek[$i]["TERMEK_ID"]."\">".$termekek[$i]["CIM"]."</a>
                                 </h4>
-                                <p>Fekete István</p>
+                                <p>".$termekek[$i]["LEIRAS"]."</p>
                             </div>
                         </div>
                     </div>

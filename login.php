@@ -32,10 +32,12 @@
                     </div>
                     <button class="btn btn-primary" type="submit">Bejelentkezés</button>
                 </form>
-                <a href="register.php">Még nem regisztráltál?</a>
+                <!-- <a href="register.php">Még nem regisztráltál?</a> -->
             </div>
         </div>
     </div>
+
+    <?php include("footer.php"); ?>
 
 </body>
 
