@@ -15,21 +15,35 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">Szerző</a>
+                    <a href="szerzo.php">Szerző</a>
                 </li>
                 <li>
-                    <a href="#">Kiadó</a>
+                    <a href="kiado.php">Kiadó</a>
                 </li>
                 <li>
-                    <a href="#">Műfaj</a>
+                    <a href="mufaj.php">Műfaj</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <?php if ($_SESSION["admin"]==true) { ?>
+                <li>
+                    <a href="editor.php">Szerkesztő</a>
+                </li>
+                <?php } ?>
+                <?php if ($_SESSION["logged_in"]==true) { ?>
+                <li>
+                    <a href="profile.php">Saját adatok</a>
+                </li>
+                <?php } ?>
                 <li>
                     <a href="cart.php">Kosár</a>
                 </li>
                 <li>
-                    <a href="login.php">Bejelentkezés</a>
+                    <?php if ($_SESSION["logged_in"]==false) { ?>
+                        <a href="login.php">Bejelentkezés</a>
+                    <?php } else { ?>
+                        <a href="logout.php">Kijelentkezés</a>
+                    <?php } ?>
                 </li>
             </ul>
         </div>

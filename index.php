@@ -26,7 +26,11 @@
                 </div>
             </div>
 
-            <?php include("category.php"); ?>
+            <div class="col-md-9">
+                <div class="row">
+                    <?php include("category.php"); ?>
+                </div>
+            </div>
 
         </div>
 

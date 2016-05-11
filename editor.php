@@ -14,13 +14,7 @@
     <!-- Page Content -->
     <div class="container">
         <div class="row">
-            <?php
-            if (!isset($_SESSION["cart"])||count($_SESSION["cart"])) {
-                print("Nincs termék a kosárban");
-            } else {
-                
-            }
-            ?>
+
         </div>
     </div>
 
